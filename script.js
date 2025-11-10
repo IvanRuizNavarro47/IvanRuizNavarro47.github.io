@@ -1,128 +1,106 @@
-// ===== EFECTO DE TEXTO DINÁMICO EN LA SECCIÓN INICIO =====
-const texto = ["Desarrollador Web", "Programador Java", "Apasionado por el diseño"];
-let i = 0;
-let j = 0;
-let borrando = false;
-const velocidad = 120; // velocidad de escritura
-const pausa = 1800; // pausa antes de borrar
-const textoElemento = document.createElement("span");
+// ==== TYPING EFFECT ====
+const roles = [
+  "Desarrollador Web",
+  "Programador Java",
+  "Apasionado por la tecnología",
+];
+const rolElemento = document.querySelector(".rol");
+let index = 0;
 
-const h2 = document.querySelector(".hero h2");
-if (h2) {
-  h2.appendChild(document.createElement("br"));
-  h2.appendChild(textoElemento);
-}
+function cambiarRol() {
+  rolElemento.textContent = "";
+  const texto = roles[index];
+  let i = 0;
 
-function escribir() {
-  const palabra = texto[i];
-
-  if (!borrando) {
-    textoElemento.textContent = palabra.substring(0, j + 1);
-    j++;
-
-    if (j === palabra.length) {
-      borrando = true;
-      setTimeout(escribir, pausa);
-      return;
-    }
-  } else {
-    textoElemento.textContent = palabra.substring(0, j - 1);
-    j--;
-
-    if (j === 0) {
-      borrando = false;
-      i = (i + 1) % texto.length;
+  function escribir() {
+    if (i < texto.length) {
+      rolElemento.textContent += texto[i];
+      i++;
+      setTimeout(escribir, 100);
+    } else {
+      setTimeout(borrar, 1500);
     }
   }
 
-  setTimeout(escribir, velocidad);
-}
-
-escribir();
-
-// ===== EFECTO DE SCROLL SUAVE =====
-document.querySelectorAll('a[href^="#"]').forEach(enlace => {
-  enlace.addEventListener("click", e => {
-    e.preventDefault();
-    document.querySelector(enlace.getAttribute("href")).scrollIntoView({
-      behavior: "smooth"
-    });
-  });
-});
-
-// ===== ANIMACIÓN AL HACER SCROLL (fade-in) =====
-const elementos = document.querySelectorAll("section");
-
-function mostrarElementos() {
-  const ventanaAltura = window.innerHeight;
-
-  elementos.forEach(el => {
-    const top = el.getBoundingClientRect().top;
-    if (top < ventanaAltura - 100) {
-      el.style.opacity = 1;
-      el.style.transform = "translateY(0)";
+  function borrar() {
+    if (i > 0) {
+      rolElemento.textContent = texto.substring(0, i - 1);
+      i--;
+      setTimeout(borrar, 60);
+    } else {
+      index = (index + 1) % roles.length;
+      cambiarRol();
     }
-  });
+  }
+
+  escribir();
 }
+cambiarRol();
 
-window.addEventListener("scroll", mostrarElementos);
+// ==== ANIMACIONES CON INTERSECTION OBSERVER ====
+const observer = new IntersectionObserver(
+  (entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("visible");
+        observer.unobserve(entry.target); // deja de observar cuando ya es visible
+      }
+    });
+  },
+  { threshold: 0.1 }
+);
 
-document.querySelectorAll("section").forEach(section => {
-  section.style.opacity = 0;
-  section.style.transform = "translateY(30px)";
-  section.style.transition = "all 0.8s ease";
+// === Observar elementos estáticos (tecnologías, secciones, etc.) ===
+document.querySelectorAll(".tech, section, h2, p").forEach((el) => {
+  observer.observe(el);
+document.querySelectorAll('.formacion-item').forEach((el) => observer.observe(el));
+
+});
+document.querySelectorAll(".formacion-item").forEach((el) => {
+  observer.observe(el);
 });
 
-mostrarElementos();
 
-// ===== CARGAR TODOS LOS REPOSITORIOS DE GITHUB =====
-const githubUser = "IvanRuizNavarro47";
-const reposContainer = document.querySelector(".project-container");
+// ==== CARGAR PROYECTOS DESDE GITHUB ====
+const username = "IvanRuizNavarro47";
+const proyectosContainer = document.getElementById("proyectos-grid");
 
-async function fetchRepos() {
+async function cargarRepos() {
   try {
-    const response = await fetch(`https://api.github.com/users/${githubUser}/repos?per_page=100`);
-    const repos = await response.json();
+    const res = await fetch(
+      `https://api.github.com/users/${username}/repos?per_page=100&sort=updated`
+    );
+    if (!res.ok) throw new Error("Error en la respuesta de GitHub");
 
-    // Ordenar por fecha de actualización (más recientes primero)
-    repos.sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at));
+    const repos = await res.json();
+    const proyectos = repos.filter((repo) => !repo.fork && !repo.private);
 
-    reposContainer.innerHTML = "";
+    proyectosContainer.innerHTML = "";
 
-    repos.forEach(repo => {
-      const nombre = repo.name.toLowerCase();
-      const descripcion = repo.description ? repo.description.toLowerCase() : "";
-
-      // 🔹 Filtros para excluir repositorios
-      if (nombre.includes("no-publicado") || nombre.includes("nopublicado")) return;
-      if (descripcion.includes("no publicado") || descripcion.includes("privado")) return;
-
-      // Crear tarjeta
+    proyectos.forEach((repo) => {
+      const lenguaje = repo.language || "Lenguaje no detectado";
       const card = document.createElement("div");
-      card.className = "project-card";
-
-      const lenguaje = repo.language ? `<span class="lenguaje">${repo.language}</span>` : "";
-
+      card.classList.add("proyecto");
       card.innerHTML = `
         <h3>${repo.name}</h3>
-        ${lenguaje}
-        <a href="${repo.html_url}" target="_blank">Ver en GitHub</a>
+        <p class="lenguajes"><strong>Tecnologías:</strong> ${lenguaje}</p>
+        <div class="links">
+          <a href="${repo.html_url}" target="_blank">💻 Ver código</a>
+          ${
+            repo.homepage
+              ? `<a href="${repo.homepage}" target="_blank">🌐 Ver demo</a>`
+              : ""
+          }
+        </div>
       `;
-
-      reposContainer.appendChild(card);
+      proyectosContainer.appendChild(card);
+      observer.observe(card); // 👈 ahora también los observa dinámicamente
     });
-
-    // ❌ Eliminamos el bloque del proyecto manual "no publicado"
-    // Si algún día quieres mostrarlo, puedes volver a añadirlo aquí
-
-    if (reposContainer.innerHTML.trim() === "") {
-      reposContainer.innerHTML = "<p>No se encontraron repositorios públicos.</p>";
-    }
-
   } catch (error) {
-    console.error("Error al cargar repositorios:", error);
-    reposContainer.innerHTML = "<p>No se pudieron cargar los repositorios.</p>";
+    console.error(error);
+    proyectosContainer.innerHTML =
+      "<p>No se pudieron cargar los proyectos 😔</p>";
   }
 }
 
-fetchRepos();
+cargarRepos();
