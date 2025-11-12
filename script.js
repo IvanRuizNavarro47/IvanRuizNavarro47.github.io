@@ -147,5 +147,45 @@ proyectos.forEach((proyecto) => {
 });
 
 
+// ==== ANIMACIÓN AL HACER SCROLL (PROYECTOS) ====
+const observerProyectos = new IntersectionObserver(
+  (entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("visible");
+        observerProyectos.unobserve(entry.target); // evita reanimar cada vez
+      }
+    });
+  },
+  { threshold: 0.1 }
+);
+
+// Espera a que los proyectos se carguen
+document.addEventListener("DOMContentLoaded", () => {
+  const proyectos = document.querySelectorAll(".proyecto-card");
+  proyectos.forEach((proyecto) => observerProyectos.observe(proyecto));
+});
+
+
+// ==== ANIMACIÓN STACK PRINCIPAL ====
+const observerStack = new IntersectionObserver(
+  (entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("visible");
+        observerStack.unobserve(entry.target);
+      }
+    });
+  },
+  { threshold: 0.1 }
+);
+
+// Observa cada elemento del stack
+document.addEventListener("DOMContentLoaded", () => {
+  const stacks = document.querySelectorAll(".stack");
+  stacks.forEach((stack) => observerStack.observe(stack));
+});
+
+
 
 cargarRepos();

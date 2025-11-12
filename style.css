@@ -137,6 +137,35 @@ section h2 {
   transform: translateY(-5px);
 }
 
+/* ===== ANIMACIÓN STACK PRINCIPAL ===== */
+.stack {
+  opacity: 0;
+  transform: translateY(40px) scale(0.95);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.stack.visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+/* Opcional: animación en cascada */
+.stacks ul .stack:nth-child(1) { transition-delay: 0.05s; }
+.stacks ul .stack:nth-child(2) { transition-delay: 0.1s; }
+.stacks ul .stack:nth-child(3) { transition-delay: 0.15s; }
+.stacks ul .stack:nth-child(4) { transition-delay: 0.2s; }
+.stacks ul .stack:nth-child(5) { transition-delay: 0.25s; }
+.stacks ul .stack:nth-child(6) { transition-delay: 0.3s; }
+.stacks ul .stack:nth-child(7) { transition-delay: 0.35s; }
+.stacks ul .stack:nth-child(8) { transition-delay: 0.4s; }
+.stacks ul .stack:nth-child(9) { transition-delay: 0.45s; }
+.stacks ul .stack:nth-child(10) { transition-delay: 0.5s; }
+.stacks ul .stack:nth-child(11) { transition-delay: 0.55s; }
+.stacks ul .stack:nth-child(12) { transition-delay: 0.6s; }
+.stacks ul .stack:nth-child(13) { transition-delay: 0.65s; }
+.stacks ul .stack:nth-child(14) { transition-delay: 0.7s; }
+
+
 
 
 /* 📬 Contacto */
@@ -653,4 +682,82 @@ h2.fade-in {
 }
 
 
+
+.proyectos-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); /* PC y tablets grandes */
+  gap: 24px;
+  padding: 20px;
+  justify-content: center; /* centra los elementos si hay menos de una fila completa */
+}
+
+/* 📱 Ajustes para móviles */
+@media (max-width: 768px) {
+  .proyectos-grid {
+    grid-template-columns: 1fr; /* una sola columna */
+    padding: 10px;
+  }
+
+  .proyecto-card {
+    max-width: 100%;
+    margin: 0 auto; /* centrado */
+  }
+}
+
+@media (max-width: 480px) {
+  .proyectos-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .proyecto-card img {
+    height: 180px; /* más compacto en móvil */
+  }
+
+  .proyecto-card h3 {
+    font-size: 1.2rem;
+  }
+
+  .proyecto-card p {
+    font-size: 0.95rem;
+  }
+}
+
+/* 📱 Márgenes correctos entre botones en móvil */
+@media (max-width: 427px) {
+  .proyecto-card .links {
+    display: flex;
+    flex-direction: column !important;
+    align-items: center;
+    gap: 15px !important;          /* espacio entre botones */
+    margin-top: 25px !important;   /* espacio arriba */
+    margin-bottom: 25px !important;/* espacio abajo */
+  }
+
+  .proyecto-card .links a {
+    width: 80%;
+    text-align: center;
+    padding: 10px 0;
+  }
+}
+
+
+
+/* ===== ANIMACIÓN PARA LOS PROYECTOS ===== */
+.proyecto-card {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+
+.proyecto-card.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Ya tienes esto, lo dejamos igual */
+.proyecto-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 12px 20px rgba(0, 0, 0, 0.4);
+}
 
