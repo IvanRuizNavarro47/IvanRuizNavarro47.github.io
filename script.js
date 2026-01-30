@@ -142,7 +142,8 @@ const proyectos = [
     frontend: "Vue.js, HTML, CSS",
     backend: "Laravel",
     imagen: "assets/images/MintyHost.png",
-    enlaceCodigo: "https://github.com/IvanRuizNavarro47/test-minty-2026"
+    enlaceFrontend: "https://github.com/IvanRuizNavarro47/test-minty-2026",
+    enlaceBackend: "https://github.com/IvanRuizNavarro47/test-minty-2026"
   }
   
 ];
