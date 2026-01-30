@@ -127,7 +127,24 @@ const proyectos = [
     backend: "",
     imagen: "assets/images/PilatesBerlin1.png",
     enlaceFrontend: "https://github.com/IvanRuizNavarro47/PilatesBerlin"
+  },
+    {
+    nombre: "Página web Salvador Navarro León",
+    descripcion: "Página web realizada al escritor Salvador Navarro León, mostrando su biografía y obras literarias.",
+    frontend: "Wix",
+    backend: "",
+    imagen: "assets/images/SalvadorNavarro.png",
+    enlaceFrontend: "https://www.salvador-navarro.com/"
+   },
+    {
+    nombre: "Prueba Minty Host 2026",
+    descripcion: "Caso práctico rellenado para la prueba técnica de Minty Host 2026.",
+    frontend: "Wix",
+    backend: "",
+    imagen: "assets/images/MintyHost2026.png",
+    enlaceFrontend: "assets/images/MintyHost.png"
   }
+  
 ];
 proyectos.forEach((proyecto) => {
   const card = document.createElement("div");
