@@ -138,7 +138,7 @@ const proyectos = [
    },
     {
     nombre: "Prueba Minty Host 2026",
-    descripcion: "Caso práctico rellenado para la prueba técnica de Minty Host 2026.",
+    descripcion: "Caso práctico para la prueba técnica de Minty Host 2026.",
     frontend: "Wix",
     backend: "",
     imagen: "assets/images/MintyHost2026.png",
@@ -205,4 +205,3 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
-cargarRepos();
