@@ -139,8 +139,8 @@ const proyectos = [
     {
     nombre: "Prueba Minty Host 2026",
     descripcion: "Caso práctico para la prueba técnica de Minty Host 2026.",
-    frontend: "Wix",
-    backend: "",
+    frontend: "Vue.js, HTML, CSS",
+    backend: "Laravel",
     imagen: "assets/images/MintyHost.png",
     enlaceCodigo: "https://github.com/IvanRuizNavarro47/test-minty-2026"
   }
